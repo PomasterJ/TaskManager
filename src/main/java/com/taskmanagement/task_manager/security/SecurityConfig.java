@@ -26,12 +26,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/task/**").hasRole("USER")
                         .requestMatchers(HttpMethod.PATCH,"/task/**").hasRole("USER")
                         .requestMatchers(HttpMethod.DELETE,"/task/**").hasRole("ADMIN")
+                        .requestMatchers("/swagger-ui/**").hasAnyRole("ADMIN","USER")
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());
 
-        httpSecurity.csrf((csrf) -> csrf.ignoringRequestMatchers("/task/**"));
-
+        httpSecurity.csrf((csrf) -> csrf.ignoringRequestMatchers("/task/**")
+            .ignoringRequestMatchers("/swagger-ui/**"));
         return httpSecurity.build();
     }
 
